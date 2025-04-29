@@ -82,14 +82,14 @@ code {
 }
 
 .header-icon {
-  color: #19C2FF;
+  color: #6B7280; /* text-gray-400 equivalent */
   cursor: pointer;
   transition: color 0.2s ease;
   opacity: 0.8;
 }
 
 .header-icon:hover {
-  color: #0073DC;
+  color: #4B5563; /* text-gray-600 equivalent */
   opacity: 1;
 }
 

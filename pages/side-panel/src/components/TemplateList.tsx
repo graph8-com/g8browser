@@ -22,7 +22,7 @@ const TemplateList: React.FC<TemplateListProps> = ({ templates, onTemplateSelect
             key={template.id}
             onClick={() => onTemplateSelect(template.content)}
             className={`rounded-lg p-3 text-left transition-colors ${
-              isDarkMode ? 'bg-slate-800 text-gray-200 hover:bg-slate-700' : 'bg-white text-gray-700 hover:bg-sky-50'
+              isDarkMode ? 'bg-slate-800 text-gray-200 hover:bg-slate-700' : 'bg-white text-gray-700 hover:bg-[#F3EAFF]'
             } border ${isDarkMode ? 'border-slate-700' : 'border-sky-100'}`}>
             <div className="text-sm font-medium">{template.title}</div>
           </button>
