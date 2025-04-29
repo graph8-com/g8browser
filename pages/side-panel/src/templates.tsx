@@ -2,19 +2,19 @@
 export const defaultTemplates = [
   {
     id: '1',
-    title: '🌟 Star us on GitHub!',
+    title: '🌟 Follow us on LinkedIn!',
     content:
-      "Open the Nanobrowser repository at https://github.com/nanobrowser/nanobrowser and check if you've already starred it. If not, please support us by giving us a star!",
+      'Connect with us on LinkedIn at https://www.linkedin.com/company/graph8 to stay updated on our latest company news and job opportunities!',
   },
   {
     id: '2',
     title: '🐦 Follow us on X/Twitter!',
-    content: 'Follow us at https://x.com/nanobrowser_ai to stay updated on the latest news and features!',
+    content: 'Follow us at https://x.com/graph_8 to stay updated on the latest news and features!',
   },
   {
     id: '3',
-    title: '📚 Explore AI Papers',
+    title: '📚 Get Help',
     content:
-      '- Go to https://huggingface.co/papers and click through each of the top 3 upvoted papers.\n- For each paper:\n  - Record the title, URL and upvotes\n  - Summarise the abstract section\n- Finally, compile together a summary of all 3 papers, ranked by upvotes',
+      'Visit our help center at https://help.graph8.com for tutorials, documentation, and answers to frequently asked questions.',
   },
 ];

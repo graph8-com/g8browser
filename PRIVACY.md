@@ -1,35 +1,35 @@
-# Privacy Policy for Nanobrowser
+# Privacy Policy for Graph8
 
 ## Introduction
 
-[Nanobrowser](https://github.com/nanobrowser/nanobrowser) is an open-source AI web automation tool that runs in your browser as a Chrome extension. This Privacy Policy explains how Nanobrowser handles your data and protects your privacy.
+[Graph8](https://github.com/graph8-com/g8browser) is an open-source AI web automation tool that runs in your browser as a Chrome extension. This Privacy Policy explains how Graph8 handles your data and protects your privacy.
 
 ## Open Source Commitment
 
-Nanobrowser is an open-source project licensed under the Apache License 2.0. All source code is publicly available in our [GitHub repository](https://github.com/nanobrowser/nanobrowser), ensuring complete transparency in how the application functions and processes data.
+Graph8 is an open-source project licensed under the Apache License 2.0. All source code is publicly available in our [GitHub repository](https://github.com/graph8-com/g8browser), ensuring complete transparency in how the application functions and processes data.
 
 ## Data Collection and Processing
 
 ### Local Processing
-- Nanobrowser operates entirely within your browser as a Chrome extension.
+- Graph8 operates entirely within your browser as a Chrome extension.
 - Your login credentials and browser cookies are never extracted or transmitted outside your browser.
-- No user data is collected, stored, or processed by Nanobrowser developers.
+- No user data is collected, stored, or processed by Graph8 developers.
 
 ### LLM Provider Interactions
-- When using Nanobrowser's AI features, web page data (including screenshots and HTML content) are sent directly to the large language model (LLM) provider you have chosen.
+- When using Graph8's AI features, web page data (including screenshots and HTML content) are sent directly to the large language model (LLM) provider you have chosen.
 - This data transmission is necessary for the AI functionality to work properly.
 - No third-party platforms besides your selected LLM provider will have access to this data.
 - Your data privacy is subject to the privacy policies of your chosen LLM provider.
 
 ## API Keys
 
-- Nanobrowser requires you to provide your own API keys for LLM providers.
-- These API keys are stored locally in your browser and are never transmitted to Nanobrowser servers.
+- Graph8 requires you to provide your own API keys for LLM providers.
+- These API keys are stored locally in your browser and are never transmitted to Graph8 servers.
 - You are responsible for managing and securing your API keys according to the LLM provider's terms of service.
 
 ## User Control and Rights
 
-- You have complete control over your data within Nanobrowser.
+- You have complete control over your data within Graph8.
 - You can clear your conversation history and settings at any time through the extension interface.
 - You can uninstall the extension to remove all locally stored data.
 
