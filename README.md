@@ -1,25 +1,9 @@
-<h1 align="center">
-    <img src="https://github.com/user-attachments/assets/ec60b0c4-87ba-48f4-981a-c55ed0e8497b" height="100" width="375" alt="banner" /><br>
-</h1>
 
-
-<div align="center">
-
-[![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/graph8-com)
-[![Twitter](https://img.shields.io/badge/Twitter-000000?style=for-the-badge&logo=x&logoColor=white)](https://x.com/graph8_ai)
-[![Discord](https://img.shields.io/badge/Discord-5865F2?style=for-the-badge&logo=discord&logoColor=white)](https://discord.gg/NN3ABHggMK)
-
-</div>
 
 ## 🌐 Graph8
 
-Graph8 is an open-source AI web automation tool that runs in your browser. A free alternative to OpenAI Operator with flexible LLM options and multi-agent system.
+Graph8 is a browser extension to colaborate with the graph8 platform.
 
-⬇️ Get [Graph8 from Chrome Web Store](https://chromewebstore.google.com/detail/graph8/imbddededgmcgfhfpcjmijokokekbkal) for free
-
-👏 Join the community in [Discord](https://discord.gg/NN3ABHggMK) | [X](https://x.com/graph8_ai)
-
-❤️ Loving Graph8? Give us a star 🌟 and help spread the word!
 
 <div align="center">
 <img src="https://github.com/user-attachments/assets/112c4385-7b03-4b81-a352-4f348093351b" width="600" alt="Graph8 Demo GIF" />
@@ -28,12 +12,10 @@ Graph8 is an open-source AI web automation tool that runs in your browser. A fre
 
 ## 🔥Why Graph8?
 
-Looking for a powerful AI web agent without the $200/month price tag of OpenAI Operator? **Graph8** , as a chrome extension, delivers premium web automation capabilities while keeping you in complete control:
 
-- **100% Free** - No subscription fees or hidden costs. Just install and use your own API keys, and you only pay what you use with your own API keys.
 - **Privacy-Focused** - Everything runs in your local browser. Your credentials stay with you, never shared with any cloud service.
 - **Flexible LLM Options** - Connect to your preferred LLM providers with the freedom to choose different models for different agents.
-- **Fully Open Source** - Complete transparency in how your browser is automated. No black boxes or hidden processes.
+
 
 > **Note:** We currently support OpenAI, Anthropic, Gemini, Ollama and custom OpenAI-Compatible providers, more providers will be supported.
 
@@ -50,22 +32,6 @@ Looking for a powerful AI web agent without the $200/month price tag of OpenAI O
 
 ## 🚀 Quick Start
 
-1. **Install from Chrome Web Store** (Stable Version):
-   * Visit the [Graph8 Chrome Web Store page](https://chromewebstore.google.com/detail/graph8/imbddededgmcgfhfpcjmijokokekbkal)
-   * Click "Add to Chrome" button
-   * Confirm the installation when prompted
-
-> **Important Note**: For latest features, install from ["Manually Install Latest Version"](#-manually-install-latest-version) below, as Chrome Web Store version may be delayed due to review process.
-
-2. **Configure Agent Models**:
-   * Click the Graph8 icon in your toolbar to open the sidebar
-   * Click the `Settings` icon (top right)
-   * Add your LLM API keys
-   * Choose which model to use for different agents (Navigator, Planner, Validator)
-
-## 🔧 Manually Install Latest Version
-
-To get the most recent version with all the latest features:
 
 1. **Download**
     * Download the latest `graph8.zip` file from the official Github [release page](https://github.com/graph8-com/graph8/releases).
@@ -150,7 +116,6 @@ Graph8 allows you to configure different LLM models for each agent to balance pe
   - **Falcon3 10B**
   - **Qwen 2.5 Coder 14B**
   - **Mistral Small 24B**
-  - We welcome community experience sharing with other local models in our [Discord](https://discord.gg/NN3ABHggMK)
 
 - **Prompt Engineering**:
   - Local models require more specific and cleaner prompts
@@ -160,7 +125,6 @@ Graph8 allows you to configure different LLM models for each agent to balance pe
 
 > **Note**: The cost-effective configuration may produce less stable outputs and require more iterations for complex tasks.
 
-> **Tip**: Feel free to experiment with your own model configurations! Found a great combination? Share it with the community in our [Discord](https://discord.gg/NN3ABHggMK) to help others optimize their setup.
 
 ## 💡 See It In Action
 
@@ -175,44 +139,6 @@ Here are some powerful tasks you can accomplish with just a sentence:
 3. **Shopping Research**:
    > "Find a portable Bluetooth speaker on Amazon with a water-resistant design, under $50. It should have a minimum battery life of 10 hours"
 
-## 🛠️ Roadmap
-
-We're actively developing Graph8 with exciting features on the horizon, welcome to join us! 
-
-Check out our detailed roadmap and upcoming features in our [GitHub Discussions](https://github.com/graph8-com/graph8/discussions/85). 
-
-## 🤝 Contributing
-
-**We need your help to make Graph8 even better!**  Contributions of all kinds are welcome:
-
-*  **Share Prompts & Use Cases** 
-   * Join our [Discord server](https://discord.gg/NN3ABHggMK).
-   * share how you're using Graph8.  Help us build a library of useful prompts and real-world use cases.
-*  **Provide Feedback** 
-   * Try Graph8 and give us feedback on its performance or suggest improvements in our [Discord server](https://discord.gg/NN3ABHggMK).
-* **Contribute Code**
-   * Check out our [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on how to contribute code to the project.
-   * Submit pull requests for bug fixes, features, or documentation improvements.
-
-
-We believe in the power of open source and community collaboration.  Join us in building the future of web automation!
-
-
-## 🔒 Security
-
-If you discover a security vulnerability, please **DO NOT** disclose it publicly through issues, pull requests, or discussions.
-
-Instead, please create a [GitHub Security Advisory](https://github.com/graph8-com/graph8/security/advisories/new) to report the vulnerability responsibly. This allows us to address the issue before it's publicly disclosed.
-
-We appreciate your help in keeping Graph8 and its users safe!
-
-## 💬 Community
-
-Join our growing community of developers and users:
-
-- [Discord](https://discord.gg/NN3ABHggMK) - Chat with team and community
-- [Twitter](https://x.com/graph8_ai) - Follow for updates and announcements
-- [GitHub Discussions](https://github.com/graph8-com/graph8/discussions) - Share ideas and ask questions
 
 ## 👏 Acknowledgments
 
@@ -232,4 +158,3 @@ This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENS
 
 Made with ❤️ by the Graph8 Team. 
 
-Like Graph8? Give us a star 🌟 and join us in [Discord](https://discord.gg/NN3ABHggMK) | [X](https://x.com/graph8_ai)
