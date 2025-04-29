@@ -5,14 +5,6 @@
 Graph8 is a browser extension to colaborate with the graph8 platform.
 
 
-<div align="center">
-<img src="https://github.com/user-attachments/assets/112c4385-7b03-4b81-a352-4f348093351b" width="600" alt="Graph8 Demo GIF" />
-<p><em>Graph8's multi-agent system analyzing HuggingFace in real-time, with the Planner intelligently self-correcting when encountering obstacles and dynamically instructing the Navigator to adjust its approach—all running locally in your browser.</em></p>
-</div>
-
-## 🔥Why Graph8?
-
-
 - **Privacy-Focused** - Everything runs in your local browser. Your credentials stay with you, never shared with any cloud service.
 - **Flexible LLM Options** - Connect to your preferred LLM providers with the freedom to choose different models for different agents.
 
