@@ -1,5 +1,12 @@
 import 'webextension-polyfill';
-import { agentModelStore, AgentNameEnum, generalSettingsStore, llmProviderStore } from '@extension/storage';
+import {
+  agentModelStore,
+  AgentNameEnum,
+  generalSettingsStore,
+  llmProviderStore,
+  ProviderTypeEnum,
+  getDefaultAgentModelParams,
+} from '@extension/storage';
 import BrowserContext from './browser/context';
 import { Executor } from './agent/executor';
 import { createLogger } from './log';
@@ -251,3 +258,64 @@ async function subscribeToExecutorEvents(executor: Executor) {
     }
   });
 }
+
+// Ensure a default OpenAI-compatible provider exists on first install
+async function ensureDefaultProvider() {
+  const DEFAULT_PROVIDER_ID = 'default_openai';
+
+  // ──────────────────────────────────────────────────────────────
+  // Hard-coded default provider credentials
+  // NOTE: These are public demo credentials shipped with the extension.
+  //       Replace with your own before distributing if necessary.
+  const DEFAULT_API_BASE_URL = 'https://ai-textual-agents.graph8.com';
+  const DEFAULT_API_KEY = 'fdfd4483-af31-4d73-91cf-c876f11963a5';
+
+  if (!(await llmProviderStore.hasProvider(DEFAULT_PROVIDER_ID))) {
+    await llmProviderStore.setProvider(DEFAULT_PROVIDER_ID, {
+      name: 'graph8',
+      type: ProviderTypeEnum.CustomOpenAI,
+      apiKey: DEFAULT_API_KEY,
+      baseUrl: DEFAULT_API_BASE_URL,
+      modelNames: ['o3', 'gpt-4.1'],
+    });
+  } else {
+    // If provider exists but is missing key or baseUrl, patch them in
+    const existing = await llmProviderStore.getProvider(DEFAULT_PROVIDER_ID);
+    if (existing && (!existing.apiKey || !existing.baseUrl || !existing.name)) {
+      await llmProviderStore.setProvider(DEFAULT_PROVIDER_ID, {
+        ...existing,
+        apiKey: existing.apiKey || DEFAULT_API_KEY,
+        baseUrl: existing.baseUrl || DEFAULT_API_BASE_URL,
+        name: existing.name || 'graph8',
+      });
+    }
+  }
+}
+
+// Ensure default agent -> model mapping exists
+async function ensureDefaultAgentModels() {
+  const DEFAULT_PROVIDER_ID = 'default_openai';
+
+  // Planner -> o3, Navigator -> gpt-4.1, Validator -> o3
+  const defaults: Record<AgentNameEnum, string> = {
+    [AgentNameEnum.Planner]: 'o3',
+    [AgentNameEnum.Navigator]: 'gpt-4.1',
+    [AgentNameEnum.Validator]: 'o3',
+  } as const;
+
+  for (const [agent, modelName] of Object.entries(defaults) as [AgentNameEnum, string][]) {
+    if (!(await agentModelStore.hasAgentModel(agent))) {
+      await agentModelStore.setAgentModel(agent, {
+        provider: DEFAULT_PROVIDER_ID,
+        modelName,
+        parameters: getDefaultAgentModelParams(DEFAULT_PROVIDER_ID, agent),
+      });
+    }
+  }
+}
+
+// Run once when the extension is installed or updated
+chrome.runtime.onInstalled.addListener(() => {
+  ensureDefaultProvider().catch(err => console.error('Failed to create default provider:', err));
+  ensureDefaultAgentModels().catch(err => console.error('Failed to create default agent models:', err));
+});

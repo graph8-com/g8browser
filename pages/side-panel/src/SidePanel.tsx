@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { FiSettings } from 'react-icons/fi';
 import { PiPlusBold } from 'react-icons/pi';
 import { GrHistory } from 'react-icons/gr';
 import { type Message, Actors, chatHistoryStore } from '@extension/storage';
@@ -485,8 +484,8 @@ const SidePanel = () => {
     <div>
       <div
         className={`flex h-screen flex-col ${isDarkMode ? 'bg-slate-900' : 'bg-white'} overflow-hidden border ${isDarkMode ? 'border-sky-800' : 'border-[#E2E8F0]'}`}>
-        <header className="header relative">
-          <div className="header-logo">
+        <header className="header flex items-center justify-between px-2 py-1">
+          <div className="header-logo flex-shrink-0">
             {showHistory ? (
               <button
                 type="button"
@@ -495,11 +494,9 @@ const SidePanel = () => {
                 aria-label="Back to chat">
                 ← Back
               </button>
-            ) : (
-              <img src="/icon-128.png" alt="Extension Logo" className="size-6" />
-            )}
+            ) : null}
           </div>
-          <div className="header-icons">
+          <div className="header-icons flex flex-row gap-2 ml-auto">
             {!showHistory && (
               <>
                 <button
@@ -522,15 +519,6 @@ const SidePanel = () => {
                 </button>
               </>
             )}
-            <button
-              type="button"
-              onClick={() => chrome.runtime.openOptionsPage()}
-              onKeyDown={e => e.key === 'Enter' && chrome.runtime.openOptionsPage()}
-              className={`header-icon ${isDarkMode ? 'text-gray-400 hover:text-gray-300' : 'text-gray-400 hover:text-gray-600'} cursor-pointer`}
-              aria-label="Settings"
-              tabIndex={0}>
-              <FiSettings size={20} />
-            </button>
           </div>
         </header>
         {showHistory ? (

@@ -23,8 +23,8 @@ export const DEFAULT_GENERAL_SETTINGS: GeneralSettingsConfig = {
   maxSteps: 100,
   maxActionsPerStep: 5,
   maxFailures: 3,
-  useVision: false,
-  useVisionForPlanner: false,
+  useVision: true,
+  useVisionForPlanner: true,
   planningInterval: 3,
 };
 

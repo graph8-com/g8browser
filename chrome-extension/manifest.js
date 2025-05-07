@@ -36,9 +36,9 @@ const manifest = withSidePanel({
    * if you want to support multiple languages, you can use the following reference
    * https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Internationalization
    */
-  name: '__MSG_extensionName__',
+  name: 'graph8: Human Extension',
   version: packageJson.version,
-  description: '__MSG_extensionDescription__',
+  description: 'A human-first browser extension for AI web automation.',
   host_permissions: ['<all_urls>'],
   permissions: ['storage', 'scripting', 'tabs', 'activeTab', 'debugger'],
   options_page: 'options/index.html',
@@ -47,10 +47,16 @@ const manifest = withSidePanel({
     type: 'module',
   },
   action: {
-    default_icon: 'icon-32.png',
+    default_icon: {
+      32: 'icon-32.png',
+      128: 'icon-128.png',
+      // Chrome will automatically use the OS/browser theme to pick the closest match
+    },
   },
   icons: {
+    32: 'icon-32.png',
     128: 'icon-128.png',
+    // Chrome does not support direct dark mode switching in manifest, but will use the browser theme for toolbar
   },
   content_scripts: [
     {
@@ -60,7 +66,15 @@ const manifest = withSidePanel({
   ],
   web_accessible_resources: [
     {
-      resources: ['*.js', '*.css', '*.svg', 'icon-128.png', 'icon-32.png'],
+      resources: [
+        '*.js',
+        '*.css',
+        '*.svg',
+        'icon-128.png',
+        'icon-32.png',
+        'icon-128-darkmode.png',
+        'icon-32-darkmode.png',
+      ],
       matches: ['*://*/*'],
     },
   ],
