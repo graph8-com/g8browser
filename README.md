@@ -1,19 +1,22 @@
+# Graph8 Browser Extension - Complete Graph8 Sequencer Integration
 
+## 🌐 Graph8 Chrome Extension
 
-## 🌐 Graph8
+Graph8 is a powerful browser extension that provides seamless integration with the Graph8 Sequencer platform for automated web task execution and LinkedIn action tracking.
 
-Graph8 is a browser extension to colaborate with the graph8 platform.
+**🎉 INTEGRATION STATUS: COMPLETE ✅**
 
-
+- **Graph8 Sequencer Integration** - Full WebSocket and webhook support for real-time task execution
+- **LinkedIn Action Tracking** - Comprehensive detection and reporting of 7 LinkedIn action types
 - **Privacy-Focused** - Everything runs in your local browser. Your credentials stay with you, never shared with any cloud service.
 - **Flexible LLM Options** - Connect to your preferred LLM providers with the freedom to choose different models for different agents.
-
+- **Enterprise-Ready** - Production-ready with robust error handling, retry mechanisms, and security features.
 
 > **Note:** We currently support OpenAI, Anthropic, Gemini, Ollama and custom OpenAI-Compatible providers, more providers will be supported.
 
-
 ## 📊 Key Features
 
+### Core Extension Features
 - **Multi-agent System**: Specialized AI agents collaborate to accomplish complex web workflows
 - **Interactive Side Panel**: Intuitive chat interface with real-time status updates
 - **Task Automation**: Seamlessly automate repetitive web automation tasks across websites
@@ -21,9 +24,24 @@ Graph8 is a browser extension to colaborate with the graph8 platform.
 - **Conversation History**: Easily access and manage your AI agent interaction history
 - **Multiple LLM Support**: Connect your preferred LLM providers and assign different models to different agents
 
+### Graph8 Sequencer Integration Features ⭐
+- **Real-time WebSocket Communication**: Instant task reception and result reporting
+- **LinkedIn Action Tracking**: Detects and tracks 7 LinkedIn action types:
+  - Connection requests and acceptances
+  - Post comments and likes
+  - Company and profile follows
+  - Direct messages
+  - Profile visits
+- **Task ID Management**: Reusable task IDs for efficient workflow management
+- **Structured Result Reporting**: Graph8-compatible JSON format with detailed action metrics
+- **Webhook Fallback**: HTTP-based communication with retry mechanisms
+- **Configuration UI**: User-friendly setup for WebSocket and webhook connections
+- **Connection Status Monitoring**: Real-time status indicators and health checks
+- **Enterprise Security**: Bearer token authentication and secure communications
 
 ## 🚀 Quick Start
 
+### Standard Installation
 
 1. **Download**
     * Download the latest `graph8.zip` file from the official Github [release page](https://github.com/graph8-com/graph8/releases).
@@ -41,7 +59,13 @@ Graph8 is a browser extension to colaborate with the graph8 platform.
     * Add your LLM API keys.
     * Choose which model to use for different agents (Navigator, Planner, Validator)
 
-4. **Upgrading**:
+4. **Configure Graph8 Sequencer** (Optional)
+    * Click the Graph8 configuration icon in the side panel
+    * Enter your Graph8 Sequencer WebSocket URL and authentication token
+    * Test the connection and save configuration
+    * Monitor connection status via the indicator in the side panel
+
+5. **Upgrading**:
     * Download the latest `graph8.zip` file from the release page.
     * Unzip and replace your existing Graph8 files with the new ones.
     * Go to `chrome://extensions/` in Chrome and click the refresh icon on the Graph8 card.
@@ -117,7 +141,6 @@ Graph8 allows you to configure different LLM models for each agent to balance pe
 
 > **Note**: The cost-effective configuration may produce less stable outputs and require more iterations for complex tasks.
 
-
 ## 💡 See It In Action
 
 Here are some powerful tasks you can accomplish with just a sentence:
@@ -131,7 +154,6 @@ Here are some powerful tasks you can accomplish with just a sentence:
 3. **Shopping Research**:
    > "Find a portable Bluetooth speaker on Amazon with a water-resistant design, under $50. It should have a minimum battery life of 10 hours"
 
-
 ## 👏 Acknowledgments
 
 Graph8 builds on top of other awesome open-source projects:
@@ -143,10 +165,8 @@ Graph8 builds on top of other awesome open-source projects:
 
 Huge thanks to their creators and contributors!
 
-
 ## 📄 License
 
 This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENSE) file for details.
 
-Made with ❤️ by the Graph8 Team. 
-
+Made with ❤️ by the Graph8 Team.

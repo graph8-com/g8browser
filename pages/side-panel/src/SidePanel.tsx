@@ -7,6 +7,8 @@ import MessageList from './components/MessageList';
 import ChatInput from './components/ChatInput';
 import ChatHistoryList from './components/ChatHistoryList';
 import TemplateList from './components/TemplateList';
+import { WebhookConfigComponent } from '../../../chrome-extension/src/components/WebhookConfig';
+import { Graph8ConfigComponent } from '../../../chrome-extension/src/components/Graph8Config';
 import { EventType, type AgentEvent, ExecutionState } from './types/event';
 import { defaultTemplates } from './templates';
 import './SidePanel.css';
@@ -21,6 +23,16 @@ const SidePanel = () => {
   const [isFollowUpMode, setIsFollowUpMode] = useState(false);
   const [isHistoricalSession, setIsHistoricalSession] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const [isGraph8LoggedIn, setIsGraph8LoggedIn] = useState<boolean>(true);
+  const [webhookConfig, setWebhookConfig] = useState<{ url: string; enabled: boolean }>({ url: '', enabled: false });
+  const [showWebhookConfig, setShowWebhookConfig] = useState(false);
+  const [graph8Connection, setGraph8Connection] = useState<{ connected: boolean; agentId: string | null; backendUrl: string; userId: string }>({ 
+    connected: false, 
+    agentId: null, 
+    backendUrl: '', 
+    userId: '' 
+  });
+  const [showGraph8Config, setShowGraph8Config] = useState(false);
   const sessionIdRef = useRef<string | null>(null);
   const portRef = useRef<chrome.runtime.Port | null>(null);
   const heartbeatIntervalRef = useRef<number | null>(null);
@@ -467,6 +479,38 @@ const SidePanel = () => {
     }
   };
 
+  // ─────────────────────────────
+  // Detect graph8 authentication
+  // ─────────────────────────────
+  const checkGraph8Login = useCallback(() => {
+    // Any cookie under *.graph8.com counts as a logged-in session
+    chrome.cookies.getAll({ domain: '.graph8.com' }, cookies => {
+      setIsGraph8LoggedIn(cookies.length > 0);
+    });
+  }, []);
+
+  useEffect(() => {
+    checkGraph8Login();
+    chrome.cookies.onChanged.addListener(checkGraph8Login);
+    return () => chrome.cookies.onChanged.removeListener(checkGraph8Login);
+  }, [checkGraph8Login]);
+
+  // Load webhook configuration on mount
+  useEffect(() => {
+    const loadWebhookConfig = async () => {
+      try {
+        const result = await chrome.storage.local.get(['webhookConfig']);
+        if (result.webhookConfig) {
+          setWebhookConfig(result.webhookConfig);
+        }
+      } catch (error) {
+        console.error('Failed to load webhook configuration:', error);
+      }
+    };
+    
+    loadWebhookConfig();
+  }, []);
+
   // Cleanup on unmount
   useEffect(() => {
     return () => {
@@ -479,6 +523,148 @@ const SidePanel = () => {
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
+
+  // Load Graph8 WebSocket status on mount
+  useEffect(() => {
+    loadGraph8Status();
+  }, []);
+
+  const handleGraph8Connect = async (backendUrl: string, userId: string, authToken?: string) => {
+    try {
+      console.log('🔥 [DEBUG] SidePanel: Starting Graph8 connection...', { backendUrl, userId, authToken });
+      
+      const response = await new Promise<any>((resolve, reject) => {
+        console.log('🔥 [DEBUG] SidePanel: Creating port connection...');
+        const port = chrome.runtime.connect({ name: 'sidepanel' });
+        
+        const message = { 
+          type: 'connect_graph8', 
+          backendUrl, 
+          userId, 
+          authToken 
+        };
+        console.log('🔥 [DEBUG] SidePanel: Sending message to background:', message);
+        
+        port.postMessage(message);
+        
+        port.onMessage.addListener((message) => {
+          console.log('🔥 [DEBUG] SidePanel: Received response from background:', message);
+          if (message.type === 'success') {
+            resolve(message.data);
+          } else if (message.type === 'error') {
+            reject(new Error(message.error));
+          }
+        });
+      });
+
+      console.log('🔥 [DEBUG] SidePanel: Connection response:', response);
+      
+      setGraph8Connection({
+        connected: response.connected,
+        agentId: response.agentId,
+        backendUrl,
+        userId
+      });
+
+      return response.connected;
+    } catch (error) {
+      console.error('🔥 [DEBUG] SidePanel: Failed to connect to Graph8:', error);
+      return false;
+    }
+  };
+
+  const handleGraph8Disconnect = async () => {
+    try {
+      await new Promise<void>((resolve, reject) => {
+        const port = chrome.runtime.connect({ name: 'sidepanel' });
+        port.postMessage({ type: 'disconnect_graph8' });
+        
+        port.onMessage.addListener((message) => {
+          if (message.type === 'success') {
+            resolve();
+          } else if (message.type === 'error') {
+            reject(new Error(message.error));
+          }
+        });
+      });
+
+      setGraph8Connection({
+        connected: false,
+        agentId: null,
+        backendUrl: '',
+        userId: ''
+      });
+    } catch (error) {
+      console.error('Failed to disconnect from Graph8:', error);
+    }
+  };
+
+  const loadGraph8Status = async () => {
+    try {
+      const response = await new Promise<any>((resolve, reject) => {
+        const port = chrome.runtime.connect({ name: 'sidepanel' });
+        port.postMessage({ type: 'get_graph8_status' });
+        
+        port.onMessage.addListener((message) => {
+          if (message.type === 'success') {
+            resolve(message.data);
+          } else if (message.type === 'error') {
+            reject(new Error(message.error));
+          }
+        });
+      });
+
+      setGraph8Connection(prev => ({
+        ...prev,
+        connected: response.connected,
+        agentId: response.agentId
+      }));
+    } catch (error) {
+      console.error('Failed to load Graph8 status:', error);
+    }
+  };
+
+  // If the user is not logged in to graph8, show a login prompt in place of the chat UI.
+  if (!isGraph8LoggedIn) {
+    return (
+      <div
+        className={`flex h-screen items-center justify-center ${
+          isDarkMode ? 'bg-slate-900 text-white' : 'bg-white text-black'
+        }`}>
+        <a
+          href="https://graph8.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-blue-500 underline">
+          Please login to graph8.com
+        </a>
+      </div>
+    );
+  }
+
+  const handleWebhookConfigChange = (newConfig: { url: string; enabled: boolean }) => {
+    setWebhookConfig(newConfig);
+  };
+
+  const handleWebhookConfigSave = async () => {
+    try {
+      // Save the webhook configuration to storage
+      await chrome.storage.local.set({ webhookConfig });
+    } catch (error) {
+      console.error('Failed to save webhook configuration:', error);
+    }
+  };
+
+  const handleWebhookConfigSaveWithDebug = async () => {
+    try {
+      console.log('🔥 [DEBUG] SidePanel: Saving webhook configuration...');
+      // Save the webhook configuration to storage
+      await chrome.storage.local.set({ webhookConfig });
+      console.log('🔥 [DEBUG] SidePanel: Webhook configuration saved:', webhookConfig);
+    } catch (error) {
+      console.error('🔥 [DEBUG] SidePanel: Failed to save webhook configuration:', error);
+    }
+  };
 
   return (
     <div>
@@ -499,6 +685,41 @@ const SidePanel = () => {
           <div className="header-icons flex flex-row gap-2 ml-auto">
             {!showHistory && (
               <>
+                {/* Webhook Status Indicator */}
+                <div 
+                  className={`flex items-center px-2 py-1 rounded-full text-xs font-medium cursor-pointer transition-colors ${
+                    webhookConfig.enabled 
+                      ? 'bg-green-100 text-green-800 border border-green-200 hover:bg-green-200' 
+                      : 'bg-gray-100 text-gray-600 border border-gray-200 hover:bg-gray-200'
+                  }`}
+                  title={webhookConfig.enabled ? `Graph8 Webhook: ${webhookConfig.url}` : 'Graph8 Webhook: Disabled - Click to configure'}
+                  onClick={() => setShowWebhookConfig(!showWebhookConfig)}
+                >
+                  <div 
+                    className={`w-2 h-2 rounded-full mr-1 ${
+                      webhookConfig.enabled ? 'bg-green-500' : 'bg-gray-400'
+                    }`}
+                  />
+                  G8
+                </div>
+
+                {/* WebSocket Status Indicator */}
+                <div 
+                  className={`flex items-center px-2 py-1 rounded-full text-xs font-medium cursor-pointer transition-colors ${
+                    graph8Connection.connected 
+                      ? 'bg-blue-100 text-blue-800 border border-blue-200 hover:bg-blue-200' 
+                      : 'bg-gray-100 text-gray-600 border border-gray-200 hover:bg-gray-200'
+                  }`}
+                  title={graph8Connection.connected ? `WebSocket Connected: Agent ${graph8Connection.agentId}` : 'WebSocket Disconnected - Click to configure'}
+                  onClick={() => setShowGraph8Config(!showGraph8Config)}
+                >
+                  <div 
+                    className={`w-2 h-2 rounded-full mr-1 ${
+                      graph8Connection.connected ? 'bg-blue-500' : 'bg-gray-400'
+                    }`}
+                  />
+                  WS
+                </div>
                 <button
                   type="button"
                   onClick={handleNewChat}
@@ -580,6 +801,65 @@ const SidePanel = () => {
           </>
         )}
       </div>
+      {showWebhookConfig && (
+        <div 
+          className={`fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50`}
+          onClick={() => setShowWebhookConfig(false)}
+        >
+          <div 
+            className={`max-w-md w-full mx-4 ${isDarkMode ? 'bg-gray-800' : 'bg-white'} rounded-lg shadow-xl`}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex justify-between items-center p-4 border-b">
+              <h3 className={`text-lg font-semibold ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
+                Graph8 Webhook Configuration
+              </h3>
+              <button
+                onClick={() => setShowWebhookConfig(false)}
+                className={`text-gray-400 hover:text-gray-600 ${isDarkMode ? 'hover:text-gray-300' : ''} text-xl font-bold`}
+              >
+                ✕
+              </button>
+            </div>
+            <div className="p-4">
+              <WebhookConfigComponent />
+            </div>
+          </div>
+        </div>
+      )}
+      {showGraph8Config && (
+        <div 
+          className={`fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50`}
+          onClick={() => setShowGraph8Config(false)}
+        >
+          <div 
+            className={`max-w-md w-full mx-4 ${isDarkMode ? 'bg-gray-800' : 'bg-white'} rounded-lg shadow-xl`}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex justify-between items-center p-4 border-b">
+              <h3 className={`text-lg font-semibold ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
+                Graph8 WebSocket Configuration
+              </h3>
+              <button
+                onClick={() => setShowGraph8Config(false)}
+                className={`text-gray-400 hover:text-gray-600 ${isDarkMode ? 'hover:text-gray-300' : ''} text-xl font-bold`}
+              >
+                ✕
+              </button>
+            </div>
+            <div className="p-4">
+              <Graph8ConfigComponent 
+                onConnect={handleGraph8Connect}
+                onDisconnect={handleGraph8Disconnect}
+                isConnected={graph8Connection.connected}
+                agentId={graph8Connection.agentId}
+                currentBackendUrl={graph8Connection.backendUrl}
+                currentUserId={graph8Connection.userId}
+              />
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
